@@ -1,0 +1,92 @@
+DE : TOUT SÉLECTIONNER
+
+# server.R
+shinyServer(
+  function(input, output) {
+  
+    dataInput <- reactive({
+      inFile <- input$file1
+
+      if (is.null(inFile))
+        return(NULL)
+      
+      read.csv(inFile$datapath)
+    })
+
+    
+    output$select_x <- renderUI({
+      selectInput("x",label = "X Axis", choices = names(dataInput()))
+    })
+  
+    output$select_y <- renderUI({
+      selectInput("y",label = "Y Axis", choices = names(dataInput()))
+    })
+  
+  
+    
+    output$table = renderTable(dataInput()[,c(input$x,input$y)])
+    output$plot_table = renderPlot(plot(dataInput()[,input$x],tab[,input$y]))
+  }
+)
+
+# ui.R
+shinyUI(fluidPage(
+  titlePanel("Otolith raster analysis"),
+ 
+  sidebarLayout(
+    sidebarPanel(
+      fileInput('file1', 'Choose CSV File',
+              accept=c('text/csv', 'text/comma-separated-values,text/plain', '.csv')),
+      tags$hr(),
+      uiOutput("select_x"), # selectInput("x",label = "X Axis", choices = names(dataInput())),
+      uiOutput("select_y")  # selectInput("y",label = "Y Axis", choices = names(dataInput()))
+    ),
+     
+    mainPanel(
+      tabsetPanel(
+        tabPanel("Table", tableOutput('table')),
+        tabPanel("Plot", plotOutput('plot_table'))
+      )
+    )
+  )
+))
+
+
+
+
+
+
+
+### partie à réimplémenter
+
+    ####
+    reactive({
+    if(is.character(input$x)|is.character(input$y)){
+      output$graphtype<-renderUI({
+        selectInput("typegraph",label = "Choix du type de graph :",choices = list("Histogramme","Boxplot"))
+      })
+      if(input$graphtype=="Histogramme"){
+        output$plot = renderPlot()#plot à compléter
+      }
+      else{
+        output$plot = renderPlot()#plot à compléter
+      }
+      #histogram
+      #boxplot
+    }
+    else if(is.character(input$x)&is.character(input$y)){
+      # graph pour 2 var qualitatives plutot mettre toute les variables
+      # diagramm en camembert
+      # histogramm
+      # ou toute les variables qualitatives
+      # tout est en fct de l'effectif
+    }
+    else{
+      #histogramm
+      output$plot = renderPlot(plot(data()[,input$x],data()[,input$y],xlab = input$x,ylab = input$y))
+    }
+    })
+
+
+
+
