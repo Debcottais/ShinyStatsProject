@@ -1,8 +1,6 @@
 library(shiny)
 library(shinydashboard)
-# LA BONNE GROSSE BITE!!!!!!!!!!!!!!!!
-#Salut à tous les amis, c'est DavidLafargePokemon
-#"COUCOU"
+
 shinyUI(
   dashboardPage(
     skin = "black",
@@ -34,8 +32,6 @@ shinyUI(
                     uiOutput("selectx"),
                     uiOutput("selecty"),
                     uiOutput("graphtype")
-                    #selectInput('xcol','Variable en X',names(data())),# JE N'ARRIVE PAS A RECUPERER LES NOMS DE VARIABLES
-                    #selectInput('ycol','Variable en Y',names(data()))# JE N'ARRIVE PAS A RECUPERER LES NOMS DE VARIABLES
                   ),
                   mainPanel(
                     uiOutput("tb")
